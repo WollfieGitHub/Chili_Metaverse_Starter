@@ -9,6 +9,7 @@ public class BowStringHandle : XRGrabInteractable
     [Header("Bow String Handle")]
     [SerializeField] private BowBehavior bowBehavior;
     private Transform _transform;
+    private Transform _interactorTransform;
     private Transform _attachTransform;
     
     private Vector3 _currentPosition;
@@ -33,30 +34,33 @@ public class BowStringHandle : XRGrabInteractable
     {
         if (!_selected)
         {
-            
+            _transform.localPosition = _defaultPosition;
         }
         else
         {
+            _transform.position = _interactorTransform.position;
             _currentPosition = _transform.localPosition;
             bowBehavior.SetBowSpreading(Math.Abs((_defaultPosition - _currentPosition).magnitude));
         }
     }
 
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
         _selected = true;
+        _interactorTransform = args.interactorObject.transform;
 
         bowBehavior.OnHandleGrabbed();
     }
 
-    protected override void OnSelectExited(SelectExitEventArgs args)
+    protected override void OnSelectExiting(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
         _selected = false;
         
         // Reset back to default
         bowBehavior.SetBowSpreading(0.0);
+        _interactorTransform = null;
         _transform.position = _defaultPosition;
     }
 }
