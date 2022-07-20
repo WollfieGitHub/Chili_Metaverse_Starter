@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -10,23 +7,37 @@ public class ScoreManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        score = 0;
+        lastHitScore = 0;
+        volleyScore = 0;
+        volleyId = 1;
+        nbArrowsInVolley = 0;
+        nbTotalArrows = 0;
     }
 
-    public int Score { private set; get; } = 0;
-    public int LastHitScore { private set; get; } = 0;
+    public int score;
+    public int nbTotalArrows;
 
-    public int VolleyId { private set; get; } = 0;
+    public int volleyId;
+    public int volleyScore;
+    public int lastHitScore;
+    public int nbArrowsInVolley;
 
     public void NewVolley()
     {
-        VolleyId++;
-        LastHitScore = 0;
-        Score = 0;
+        volleyId++;
+        volleyScore = 0;
+        lastHitScore = 0;
+        score = 0;
+        nbArrowsInVolley = 0;
     }
 
-    public void NewHit(int score)
+    public void NewHit(int hitScore)
     {
-        Score += score;
-        LastHitScore = score;
+        score += hitScore;
+        volleyScore += hitScore;
+        nbArrowsInVolley++;
+        nbTotalArrows++;
+        lastHitScore = hitScore;
     }
 }

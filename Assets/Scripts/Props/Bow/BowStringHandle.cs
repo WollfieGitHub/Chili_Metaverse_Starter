@@ -49,17 +49,15 @@ public class BowStringHandle : XRGrabInteractable
         base.OnSelectEntered(args);
         _selected = true;
         _interactorTransform = args.interactorObject.transform;
-
-        bowBehavior.OnHandleGrabbed();
     }
 
     protected override void OnSelectExiting(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
         _selected = false;
-        
+        bowBehavior.Release();
+
         // Reset back to default
-        bowBehavior.SetBowSpreading(0.0);
         _interactorTransform = null;
         _transform.position = _defaultPosition;
     }

@@ -10,7 +10,7 @@ public class PointZones : MonoBehaviour
     private void Start()
     {
         _zoneColliders = GetComponentsInChildren<PointZone>();
-        Array.Sort(_zoneColliders, (zone1, zone2) => zone2.Points - zone1.Points);
+        Array.Sort(_zoneColliders, (zone1, zone2) => zone1.Points - zone2.Points);
     }
 
     public int GetNbPointsOf(Arrow arrow)
@@ -20,11 +20,12 @@ public class PointZones : MonoBehaviour
         foreach (PointZone pointZone in _zoneColliders)
         {
             bool isInCurrentZone = pointZone.IsArrowPlanted(arrow);
+            Debug.Log($"The arrow {(isInCurrentZone ? "is" : "is not")} in {pointZone.Points} points zone");
             if (!isInCurrentZone) { return nbPoints; }
 
             nbPoints = pointZone.Points;
         }
 
-        return 0;
+        return nbPoints;
     }
 }

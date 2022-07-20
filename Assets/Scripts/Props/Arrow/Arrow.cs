@@ -1,41 +1,54 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    private Transform _transform;
+    private Rigidbody _rigidbody;
+    public bool IsPlacedInQuiver { private set; get; }
 
+    public bool Launched { private set; get; } = false;
     public string UID { private set; get; }
 
     // Start is called before the first frame update
     void Start()
     {
         UID = "Arrow:" + Environment.TickCount;
+        _transform = transform;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Launch(float tension)
     {
-        
+        TogglePhysics(true);
+        Launched = true;
+        _rigidbody.AddForce(
+            tension * ConfigManager.Instance.arrowSpeed * _transform.forward.normalized
+        );
     }
 
-    private sealed class UidEqualityComparer : IEqualityComparer<Arrow>
+    private void Update()
     {
-        public bool Equals(Arrow x, Arrow y)
-        {
-            if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
-            if (x.GetType() != y.GetType()) return false;
-            return x.UID == y.UID;
-        }
+        if (!Launched) { return; }
 
-        public int GetHashCode(Arrow obj)
+        Ray ray = new Ray(_transform.position, _transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 0.3f))
         {
-            return (obj.UID != null ? obj.UID.GetHashCode() : 0);
+            Launched = false;
+            TogglePhysics(false);
         }
     }
 
-    public static IEqualityComparer<Arrow> UidComparer { get; } = new UidEqualityComparer();
+    private void TogglePhysics(bool physicsEnabled)
+    {
+        _rigidbody.useGravity = physicsEnabled;
+        _rigidbody.isKinematic = !physicsEnabled;
+    }
+
+    public void PlaceInQuiver() => IsPlacedInQuiver = true;
+    public void RemoveFromQuiver() => IsPlacedInQuiver = false;
 }

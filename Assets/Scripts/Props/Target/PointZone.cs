@@ -6,38 +6,41 @@ using UnityEngine;
 public class PointZone : MonoBehaviour
 {
     public int Points;
-    private HashSet<Arrow> _arrows = new ();
+    private HashSet<string> _arrows = new ();
     private Arrow _lastArrow = null;
+    public int nbOfArrowsPlanted = 0;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Arrow"))
-        {
-            Arrow arrow = collision.gameObject.GetComponent<Arrow>();
-            Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
-            arrowBody.useGravity = false;
-            arrowBody.freezeRotation = true;
-            arrowBody.isKinematic = false; // TODO CHECK this
-            _arrows.Add(arrow);
-            _lastArrow = arrow;
-        }
+        Arrow arrow = other.gameObject.GetComponent<Arrow>();
+        if (ReferenceEquals(null, arrow)) { return; }
+
+        Debug.Log($"Arrow entered zone of score {Points} : {arrow.UID}");
+        Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
+        arrowBody.useGravity = false;
+        arrowBody.freezeRotation = true;
+        arrowBody.isKinematic = false; // TODO CHECK this
+        _arrows.Add(arrow.UID);
+        _lastArrow = arrow;
+        nbOfArrowsPlanted = _arrows.Count;
     }
 
-    private void OnCollisionExit(Collision other)
+
+    private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Arrow"))
+        Arrow arrow = other.gameObject.GetComponent<Arrow>();
+        if (ReferenceEquals(null, arrow)) { return; }
+
+        _arrows.Remove(arrow.UID);
+        if (_lastArrow == arrow)
         {
-            Arrow arrow = other.gameObject.GetComponent<Arrow>();
-            _arrows.Remove(arrow);
-            if (_lastArrow == arrow)
-            {
-                _lastArrow = null;
-            }
+            _lastArrow = null;
         }
+        nbOfArrowsPlanted = _arrows.Count;
     }
 
     public bool IsArrowPlanted(Arrow arrow)
     {
-        return _arrows.Contains(arrow);
+        return _arrows.Contains(arrow.UID);
     }
 }

@@ -7,18 +7,20 @@ public class ArrowStopPlane : MonoBehaviour
 {
     [SerializeField] private PointZones pointZones;
     
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Arrow"))
-        {
-            Arrow arrow = collision.gameObject.GetComponent<Arrow>();
-            StartCoroutine(nameof(UpdateScore), arrow);
-        }
+        Arrow arrow = collision.gameObject.GetComponent<Arrow>();
+        if (ReferenceEquals(null, arrow)) { return; }
+        
+        Debug.Log($"An arrow passed the plane : {arrow.UID}");
+        StartCoroutine(UpdateScore(arrow));
     }
 
-    private IEnumerable UpdateScore(Arrow arrow)
+    private IEnumerator UpdateScore(Arrow arrow)
     {
         yield return new WaitForSeconds(1f);
-        ScoreManager.Instance.NewHit(pointZones.GetNbPointsOf(arrow));
+        int hitScore = pointZones.GetNbPointsOf(arrow);
+        Debug.Log($"The arrow {arrow.UID} scored {hitScore} points !");
+        ScoreManager.Instance.NewHit(hitScore);
     }
 }
