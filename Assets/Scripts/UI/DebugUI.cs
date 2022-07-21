@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,7 +7,8 @@ public class DebugUI : MonoBehaviour
 {
     private TextMeshProUGUI _debugUI;
     private static DebugUI _instance;
-    private const int LineCapacity = 5;
+    private const int LineCapacity = 50;
+    private const int MaxLineLength = 50;
     private Queue<string> _lines = new ();
 
     private void Awake()
@@ -25,7 +27,7 @@ public class DebugUI : MonoBehaviour
         string[] msgLines = msg.Split("\n");
         foreach (string line in msgLines)
         {
-            _instance.AddLine(line);
+            _instance.AddLine(line.Substring(0, Math.Min(line.Length, MaxLineLength)));
         }
     }
 

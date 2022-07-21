@@ -25,31 +25,25 @@ public class ArrowSocket : XRSocketInteractor
     {
         base.OnSelectEntered(args);
         Arrow arrow = args.interactableObject.transform.GetComponent<Arrow>();
-        if (ReferenceEquals(null, arrow))
-        {
-            return;
-        }
-
-        Collider arrowCollider = arrow.GetComponent<Collider>();
-        arrowCollider.isTrigger = true;
+        DebugUI.Show($"Selected {arrow}");
+        if (ReferenceEquals(null, arrow)) { return; }
+        DebugUI.Show($"Selected arrow wasn't null : {arrow.UID}");
+        
         Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
         arrowBody.useGravity = false;
         arrowBody.isKinematic = true;
-        bowBehavior.SetArrowLoaded(arrow);
+        DebugUI.Show("Load arrow called");
+        bowBehavior.LoadArrow(arrow);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
         Arrow arrow = args.interactableObject.transform.GetComponent<Arrow>();
-        if (ReferenceEquals(null, arrow))
-        {
-            return;
-        }
+        if (ReferenceEquals(null, arrow)) { return; }
+        if (arrow.Launched) { return; }
 
         Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
-        Collider arrowCollider = arrow.GetComponent<Collider>();
-        arrowCollider.isTrigger = true;
         arrowBody.useGravity = true;
         arrowBody.isKinematic = false;
         bowBehavior.UnloadArrow();
@@ -58,17 +52,19 @@ public class ArrowSocket : XRSocketInteractor
     public override bool CanHover(IXRHoverInteractable interactable)
     {
         Arrow arrow = interactable.transform.GetComponent<Arrow>();
-        return bowBehavior.isHeld 
-               && (!bowBehavior.IsArrowLoaded || bowBehavior.loadedArrowId() == arrow.UID)
+        return base.CanHover(interactable)
+               && bowBehavior.isHeld
+               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.UID)
                && (!ReferenceEquals(null, arrow) && !arrow.Launched);
     }
 
     public override bool CanSelect(IXRSelectInteractable interactable)
     {
         Arrow arrow = interactable.transform.GetComponent<Arrow>();
-        return bowBehavior.isHeld
-               && (!ReferenceEquals(null, arrow) && !arrow.Launched)
-               && (!bowBehavior.IsArrowLoaded || bowBehavior.loadedArrowId() == arrow.UID);
+        return base.CanSelect(interactable)
+               && bowBehavior.isHeld
+               && !ReferenceEquals(null, arrow) && !arrow.Launched
+               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.UID);
     }
 
 
@@ -76,19 +72,19 @@ public class ArrowSocket : XRSocketInteractor
     {
         Vector3 notchPosition = bowNotchTransform.localPosition;
         Vector3 stringHandlePosition = stringHandleTransform.localPosition;
-        Vector3 bowPull = stringHandlePosition - _defaultStringPosition;
-        Vector3 arrowPosition = notchPosition + offset + bowPull;
+        Vector3 bowPull = _defaultStringPosition - stringHandlePosition;
+        Vector3 arrowPosition = notchPosition + offset - bowPull;
         ArrowDirection = notchPosition - stringHandlePosition;
-        Vector3 upDirection = bowNotchTransform.up;
         _transform.localPosition = arrowPosition;
         _transform.localRotation = Quaternion.LookRotation(
-             Vector3.Cross(ArrowDirection, upDirection), 
-            upDirection
+             ArrowDirection, 
+            Vector3.Cross(bowNotchTransform.up, ArrowDirection)
         );
     }
 
     public void ReleaseArrow()
     {
         if (hasSelection) { interactionManager.SelectExit(this, firstInteractableSelected); }
+        else { DebugUI.Show("Socket had no selection");}
     }
 }

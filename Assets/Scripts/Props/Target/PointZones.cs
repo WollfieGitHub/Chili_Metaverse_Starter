@@ -28,4 +28,31 @@ public class PointZones : MonoBehaviour
 
         return nbPoints;
     }
+
+    private Dictionary<string, bool> _scoreUpdateRequestedFor = new ();
+    
+    public void RequestScoreUpdate(Arrow arrow)
+    {
+        if (!_scoreUpdateRequestedFor.ContainsKey(arrow.UID) || !_scoreUpdateRequestedFor[arrow.UID])
+        {
+            DebugUI.Show($"Requested update for {arrow.UID}");
+            _scoreUpdateRequestedFor.Add(arrow.UID, true);
+            StartCoroutine(UpdateScore(arrow));
+        }
+        else
+        {
+            DebugUI.Show($"A request has already been issued for arrow {arrow.UID}");
+        }
+    }
+
+    private IEnumerator UpdateScore(Arrow arrow)
+    {
+        DebugUI.Show("Updating score in 0.5f seconds");
+        yield return new WaitForSeconds(0.5f);
+
+        int hitScore = GetNbPointsOf(arrow);
+        Debug.Log($"The arrow {arrow.UID} scored {hitScore} points !");
+        ScoreManager.Instance.NewHit(hitScore);
+        _scoreUpdateRequestedFor.Add(arrow.UID, false);
+    }
 }

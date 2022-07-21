@@ -16,8 +16,10 @@ public class BowBehavior : XRGrabInteractable
     [SerializeField] private Transform topStringAttachPoint;
     [SerializeField] private Transform middleStringAttachPoint;
     [SerializeField] private Transform botStringAttachPoint;
-
-    private ArrowSocket _arrowSocket;
+    
+    [Header("Socket")]
+    [SerializeField] private ArrowSocket arrowSocket;
+    
     
     private LineRenderer _lineRenderer;
     private Arrow _arrowLoaded = null;
@@ -26,7 +28,6 @@ public class BowBehavior : XRGrabInteractable
     private void Start()
     {
         _lineRenderer = GetComponent<LineRenderer>();
-        _arrowSocket = GetComponentInChildren<ArrowSocket>();
     }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
@@ -41,13 +42,17 @@ public class BowBehavior : XRGrabInteractable
         isHeld = false;
     }
 
-    public void SetArrowLoaded(Arrow loaded) {
+    public void LoadArrow(Arrow loaded) {
         _arrowLoaded = loaded;
         IsArrowLoaded = true;
+        DebugUI.Show("Loaded Arrow");
     }
+    
+    
 
     public void UnloadArrow()
     {
+        DebugUI.Show("Arrow unloaded");
         _arrowLoaded = null;
         IsArrowLoaded = false;
     }
@@ -62,26 +67,50 @@ public class BowBehavior : XRGrabInteractable
             middleStringAttachPoint.position, 
             topStringAttachPoint.position
         });
-        
-        DebugUI.Show(
-            $"Loaded : {_arrowLoaded}" +
-            $"\nDistance : {bowSpreading}" +
-            $"\nHeld : {isHeld}");
     }
 
     public void Release()
     {
-        if (ReferenceEquals(_arrowLoaded, null)) { return; }
-
+        DebugUI.Show("Trying to release Arrow");
+        if (!IsArrowLoaded)
+        {
+            DebugUI.Show("No Arrow was loaded");
+            return; 
+        }
+        DebugUI.Show("Releasing loaded Arrow");
         StartCoroutine(nameof(ReleaseArrow));
     }
 
     private void ReleaseArrow()
     {
-        _arrowSocket.ReleaseArrow();
-        _arrowLoaded.Launch(bowSpreading / DrawLength );
+        DebugUI.Show($"Launching Arrow... {_arrowLoaded}");
+        Arrow arrow = _arrowLoaded;
+        UnloadArrow();
+        try
+        {
+            arrow.SetLaunched();
+            arrowSocket.ReleaseArrow();
+        }
+        catch (Exception e)
+        {
+            DebugUI.Show(e.StackTrace);
+            DebugUI.Show(e.Message);
+        }
+        
+        StartCoroutine(nameof(LaunchArrow), arrow);
         bowSpreading = 0.0f;
     }
 
-    public string loadedArrowId() => !ReferenceEquals(_arrowLoaded, null) ? null : _arrowLoaded.UID;
+    private void LaunchArrow(Arrow arrow)
+    {
+        arrow.Launch(bowSpreading / DrawLength );
+    }
+
+    public string LoadedArrowId() => ReferenceEquals(_arrowLoaded, null) ? null : _arrowLoaded.UID;
+
+    public override bool IsSelectableBy(IXRSelectInteractor interactor) => 
+        (!isHeld || interactorsSelecting.Contains(interactor)) && base.IsSelectableBy(interactor);
+    public override bool IsHoverableBy(IXRHoverInteractor interactor) => 
+        (!isHeld || interactorsHovering.Contains(interactor)) && base.IsHoverableBy(interactor);
+    
 }

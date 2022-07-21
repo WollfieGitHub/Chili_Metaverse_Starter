@@ -16,13 +16,21 @@ public class QuiverArrowSocket : XRSocketInteractor
     public override bool CanHover(IXRHoverInteractable interactable)
     {
         Arrow arrow = interactable.transform.GetComponent<Arrow>();
-        return !hasSelection && !ReferenceEquals(null, arrow) && !arrow.IsPlacedInQuiver;
+        return base.CanHover(interactable)
+               && !hasSelection
+               && !ReferenceEquals(null, arrow)
+               && !arrow.IsPlacedInQuiver
+               && !arrow.Launched;
     }
 
     public override bool CanSelect(IXRSelectInteractable interactable)
     {
         Arrow arrow = interactable.transform.GetComponent<Arrow>();
-        return !hasSelection && !ReferenceEquals(null, arrow) && !arrow.IsPlacedInQuiver;
+        return base.CanSelect(interactable)
+               && !hasSelection
+               && !ReferenceEquals(null, arrow)
+               && !arrow.IsPlacedInQuiver
+               && !arrow.Launched;
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)

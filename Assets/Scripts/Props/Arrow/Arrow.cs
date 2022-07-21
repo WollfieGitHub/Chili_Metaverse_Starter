@@ -23,11 +23,12 @@ public class Arrow : MonoBehaviour
 
     public void Launch(float tension)
     {
+        DebugUI.Show("Launched !");
         TogglePhysics(true);
         Launched = true;
-        _rigidbody.AddForce(
-            tension * ConfigManager.Instance.arrowSpeed * _transform.forward.normalized
-        );
+        _rigidbody.freezeRotation = true;
+        _rigidbody.AddForce(tension * ConfigManager.Instance.arrowSpeed * _transform.forward.normalized,
+            ForceMode.VelocityChange);
     }
 
     private void Update()
@@ -35,20 +36,27 @@ public class Arrow : MonoBehaviour
         if (!Launched) { return; }
 
         Ray ray = new Ray(_transform.position, _transform.forward);
+        LayerMask mask = LayerMask.GetMask("IgnoreArrows");
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.3f))
+        if (Physics.Raycast(ray, out hit, 0.6f, ~mask.value))
         {
+            DebugUI.Show($"Arrow hit {hit.transform.gameObject.name}");
+            ScoreManager.Instance.NewHit(0);
             Launched = false;
+            _rigidbody.freezeRotation = false;
             TogglePhysics(false);
         }
     }
 
     private void TogglePhysics(bool physicsEnabled)
     {
+        DebugUI.Show("Arrow Physics toggled to " + physicsEnabled);
         _rigidbody.useGravity = physicsEnabled;
         _rigidbody.isKinematic = !physicsEnabled;
     }
 
     public void PlaceInQuiver() => IsPlacedInQuiver = true;
     public void RemoveFromQuiver() => IsPlacedInQuiver = false;
+
+    public void SetLaunched() => Launched = true;
 }

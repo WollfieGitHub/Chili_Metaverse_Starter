@@ -10,28 +10,45 @@ public class PointZone : MonoBehaviour
     private Arrow _lastArrow = null;
     public int nbOfArrowsPlanted = 0;
 
+    private PointZones _pointZones;
+    
+    private void Start()
+    {
+        _pointZones = GetComponentInParent<PointZones>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Arrow arrow = other.gameObject.GetComponent<Arrow>();
+        Arrow arrow = other.gameObject.GetComponentInParent<Arrow>();
         if (ReferenceEquals(null, arrow)) { return; }
 
-        Debug.Log($"Arrow entered zone of score {Points} : {arrow.UID}");
+        DebugUI.Show($"Arrow entered zone of score {Points} : {arrow.UID}");
         Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
         arrowBody.useGravity = false;
-        arrowBody.freezeRotation = true;
-        arrowBody.isKinematic = false; // TODO CHECK this
+        arrowBody.isKinematic = true; // TODO CHECK this
         _arrows.Add(arrow.UID);
         _lastArrow = arrow;
         nbOfArrowsPlanted = _arrows.Count;
+
+        try
+        {
+            DebugUI.Show("Updating score from Point Zone...");
+            UpdateScore(arrow);
+        }
+        catch (Exception e)
+        {
+            DebugUI.Show(e.StackTrace);
+            DebugUI.Show(e.Message);
+        }
     }
 
 
     private void OnTriggerExit(Collider other)
     {
-        Arrow arrow = other.gameObject.GetComponent<Arrow>();
+        Arrow arrow = other.gameObject.GetComponentInParent<Arrow>();
         if (ReferenceEquals(null, arrow)) { return; }
 
-        _arrows.Remove(arrow.UID);
+        _arrows.Remove(arrow.UID); 
         if (_lastArrow == arrow)
         {
             _lastArrow = null;
@@ -42,5 +59,10 @@ public class PointZone : MonoBehaviour
     public bool IsArrowPlanted(Arrow arrow)
     {
         return _arrows.Contains(arrow.UID);
+    }
+
+    private void UpdateScore(Arrow arrow)
+    {
+        _pointZones.RequestScoreUpdate(arrow);
     }
 }

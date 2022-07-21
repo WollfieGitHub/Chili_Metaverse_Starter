@@ -9,12 +9,15 @@ public class ShootingDistanceManager : MonoBehaviour
     private GameObject _spawnedEnd;
     private Transform _spawnedEndTransform;
     private int _lastDistance = 0;
+    private Vector3 _arrowFetchingPosition;
 
     [SerializeField] private Vector3 originOffset;
     [SerializeField] private GameObject prefabMiddle;
     [SerializeField] private GameObject prefabEnd;
+    
+    private bool _endPrefabInstantiated = false;
 
-    private readonly Vector3 _diff10Meters = new (0, 0, -10); 
+    private readonly Vector3 _diff10Meters = new (0, 0.01f, -10f); 
     
     public static ShootingDistanceManager Instance;
     private Transform _transform;
@@ -25,23 +28,25 @@ public class ShootingDistanceManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        _transform = transform;
-        _spawnedEnd = Instantiate(prefabEnd, _transform);
-        _spawnedEndTransform = _spawnedEnd.transform;
-    }
-
     public void UpdateDistance()
     {
+        _transform = transform;
+        if (!_endPrefabInstantiated)
+        {
+            _spawnedEnd = Instantiate(prefabEnd, _transform);
+            _spawnedEndTransform = _spawnedEnd.transform;
+            _endPrefabInstantiated = true;
+        }
+        
         int newShootingDistance = ConfigManager.Instance.shootingDistance;
         Vector3 lastPosition = SpawnMiddlePrefabs(newShootingDistance);
         _spawnedEndTransform.position = lastPosition;
+        _arrowFetchingPosition = lastPosition + new Vector3(0, 0, -2);
     }
 
     private Vector3 SpawnMiddlePrefabs(int newShootingDistance)
     {
-        Vector3 currentPosition = originOffset + new Vector3(_lastDistance, 0, 0);
+        Vector3 currentPosition = originOffset + new Vector3(0, 0, _lastDistance);
         int diff = (newShootingDistance - _lastDistance - 2)/10;
         if (diff > 0)
         {
@@ -55,7 +60,7 @@ public class ShootingDistanceManager : MonoBehaviour
                 currentPosition += _diff10Meters;
             }
         }
-        else
+        else if (diff < 0)
         {
             
             for (int i = 0; i < Mathf.Abs(diff); i++)
@@ -67,7 +72,12 @@ public class ShootingDistanceManager : MonoBehaviour
                 currentPosition -= _diff10Meters;
             }
         }
-
+        Debug.Log(currentPosition);
         return currentPosition;
+    }
+
+    public Vector3 GetArrowFetchingPosition()
+    {
+        return _arrowFetchingPosition;
     }
 }

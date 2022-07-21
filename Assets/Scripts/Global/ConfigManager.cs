@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum BowType
 {
-    RECURVE, COMPOUND
+    Recurve = 0, Compound = 1
 }
 
 public class ConfigManager : MonoBehaviour
@@ -19,12 +19,7 @@ public class ConfigManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        switch (bowType)
-        {
-            case BowType.COMPOUND: arrowSpeed = 83.8f; break;
-            case BowType.RECURVE: arrowSpeed = 69.3f; break;
-        }
-
+        SetBowType(bowType);
         shootingDistance = Mathf.RoundToInt(shootingDistance / 10.0f) * 10;
     }
 
@@ -33,6 +28,15 @@ public class ConfigManager : MonoBehaviour
         ShootingDistanceManager.Instance.UpdateDistance();
     }
 
+    public void SetBowType(BowType bowType)
+    {
+        switch (bowType)
+        {
+            case BowType.Compound: arrowSpeed = 83.8f; break;
+            case BowType.Recurve: arrowSpeed = 69.3f; break;
+        }
+    }
+    
     public void SetShootingDistance(int newShootingDistance)
     {
         shootingDistance = newShootingDistance;
