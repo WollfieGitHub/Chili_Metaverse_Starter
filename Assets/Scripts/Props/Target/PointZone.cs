@@ -8,7 +8,6 @@ public class PointZone : MonoBehaviour
     public int Points;
     private HashSet<string> _arrows = new ();
     private Arrow _lastArrow = null;
-    public int nbOfArrowsPlanted = 0;
 
     private PointZones _pointZones;
     
@@ -21,25 +20,9 @@ public class PointZone : MonoBehaviour
     {
         Arrow arrow = other.gameObject.GetComponentInParent<Arrow>();
         if (ReferenceEquals(null, arrow)) { return; }
-
-        DebugUI.Show($"Arrow entered zone of score {Points} : {arrow.UID}");
-        Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
-        arrowBody.useGravity = false;
-        arrowBody.isKinematic = true; // TODO CHECK this
-        _arrows.Add(arrow.UID);
-        _lastArrow = arrow;
-        nbOfArrowsPlanted = _arrows.Count;
-
-        try
-        {
-            DebugUI.Show("Updating score from Point Zone...");
-            UpdateScore(arrow);
-        }
-        catch (Exception e)
-        {
-            DebugUI.Show(e.StackTrace);
-            DebugUI.Show(e.Message);
-        }
+        
+        arrow.TogglePhysics(false);
+        Caught(arrow);
     }
 
 
@@ -48,21 +31,38 @@ public class PointZone : MonoBehaviour
         Arrow arrow = other.gameObject.GetComponentInParent<Arrow>();
         if (ReferenceEquals(null, arrow)) { return; }
 
-        _arrows.Remove(arrow.UID); 
+        _arrows.Remove(arrow.Uid); 
         if (_lastArrow == arrow)
         {
             _lastArrow = null;
         }
-        nbOfArrowsPlanted = _arrows.Count;
     }
 
     public bool IsArrowPlanted(Arrow arrow)
     {
-        return _arrows.Contains(arrow.UID);
+        return _arrows.Contains(arrow.Uid);
     }
 
     private void UpdateScore(Arrow arrow)
     {
         _pointZones.RequestScoreUpdate(arrow);
+    }
+
+    public void Caught(Arrow arrow)
+    {
+        _arrows.Add(arrow.Uid);
+        _lastArrow = arrow;
+        DebugUI.Show($"Arrow entered zone of score {Points} : {arrow.Uid}");
+
+        try
+        {
+            DebugUI.Show("Updating score from Point Zone...");
+            StartCoroutine(nameof(UpdateScore), arrow);
+        }
+        catch (Exception e)
+        {
+            DebugUI.Show(e.StackTrace);
+            DebugUI.Show(e.Message);
+        }
     }
 }

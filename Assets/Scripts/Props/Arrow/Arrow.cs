@@ -7,17 +7,20 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     private Transform _transform;
+    private Transform _tipTransform;
     private Rigidbody _rigidbody;
     public bool IsPlacedInQuiver { private set; get; }
 
-    public bool Launched { private set; get; } = false;
-    public string UID { private set; get; }
+    public bool Launched { private set; get; }
+    public string Uid { private set; get; }
 
     // Start is called before the first frame update
     void Start()
     {
-        UID = "Arrow:" + Environment.TickCount;
+        Uid = "Arrow:" + Environment.TickCount;
+        Launched = false;
         _transform = transform;
+        _tipTransform = GameObject.FindWithTag("ArrowTip").transform;
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -35,20 +38,26 @@ public class Arrow : MonoBehaviour
     {
         if (!Launched) { return; }
 
-        Ray ray = new Ray(_transform.position, _transform.forward);
-        LayerMask mask = LayerMask.GetMask("IgnoreArrows");
+        Ray ray = new Ray(_tipTransform.position, _transform.forward);
+        LayerMask ignoreMask = LayerMask.GetMask("IgnoreArrows");
+        LayerMask zoneMask = LayerMask.GetMask("ArrowZone");
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.6f, ~mask.value))
+        if (Physics.Raycast(ray, out hit, 0.6f, ~ignoreMask.value | zoneMask.value))
         {
-            DebugUI.Show($"Arrow hit {hit.transform.gameObject.name}");
-            ScoreManager.Instance.NewHit(0);
-            Launched = false;
-            _rigidbody.freezeRotation = false;
+            PointZone zone = hit.transform.GetComponent<PointZone>();
+
             TogglePhysics(false);
+            Launched = false;
+            
+            if (!ReferenceEquals(zone, null)) { zone.Caught(this); }
+            else { ScoreManager.Instance.NewHit(0); }
+            
+            DebugUI.Show($"Arrow hit {hit.transform.gameObject.name}");
+            _rigidbody.freezeRotation = false;
         }
     }
 
-    private void TogglePhysics(bool physicsEnabled)
+    public void TogglePhysics(bool physicsEnabled)
     {
         DebugUI.Show("Arrow Physics toggled to " + physicsEnabled);
         _rigidbody.useGravity = physicsEnabled;

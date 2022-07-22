@@ -12,7 +12,7 @@ public class ArrowStopPlane : MonoBehaviour
         Arrow arrow = collision.gameObject.GetComponent<Arrow>();
         if (ReferenceEquals(null, arrow)) { return; }
         
-        Debug.Log($"An arrow passed the plane : {arrow.UID}");
+        Debug.Log($"An arrow passed the plane : {arrow.Uid}");
         StartCoroutine(UpdateScore(arrow));
     }
 
@@ -20,7 +20,7 @@ public class ArrowStopPlane : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         int hitScore = pointZones.GetNbPointsOf(arrow);
-        Debug.Log($"The arrow {arrow.UID} scored {hitScore} points !");
+        Debug.Log($"The arrow {arrow.Uid} scored {hitScore} points !");
         ScoreManager.Instance.NewHit(hitScore);
     }
 }

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Arrow
+  - GroundedArrowSocket
+  - ShootingAnchor
+  - ArrowTip
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - ArrowZone
   - IgnoreArrows
   - 
   - 

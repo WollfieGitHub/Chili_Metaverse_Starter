@@ -33,26 +33,26 @@ public class PointZones : MonoBehaviour
     
     public void RequestScoreUpdate(Arrow arrow)
     {
-        if (!_scoreUpdateRequestedFor.ContainsKey(arrow.UID) || !_scoreUpdateRequestedFor[arrow.UID])
+        if (!_scoreUpdateRequestedFor.ContainsKey(arrow.Uid) || !_scoreUpdateRequestedFor[arrow.Uid])
         {
-            DebugUI.Show($"Requested update for {arrow.UID}");
-            _scoreUpdateRequestedFor.Add(arrow.UID, true);
+            DebugUI.Show($"Requested update for {arrow.Uid}");
+            _scoreUpdateRequestedFor.Add(arrow.Uid, true);
             StartCoroutine(UpdateScore(arrow));
         }
         else
         {
-            DebugUI.Show($"A request has already been issued for arrow {arrow.UID}");
+            DebugUI.Show($"A request has already been issued for arrow {arrow.Uid}");
         }
     }
 
     private IEnumerator UpdateScore(Arrow arrow)
     {
-        DebugUI.Show("Updating score in 0.5f seconds");
-        yield return new WaitForSeconds(0.5f);
+        DebugUI.Show("Updating score in 0.1f seconds");
+        yield return new WaitForSeconds(0.1f);
 
         int hitScore = GetNbPointsOf(arrow);
-        Debug.Log($"The arrow {arrow.UID} scored {hitScore} points !");
+        Debug.Log($"The arrow {arrow.Uid} scored {hitScore} points !");
         ScoreManager.Instance.NewHit(hitScore);
-        _scoreUpdateRequestedFor.Add(arrow.UID, false);
+        _scoreUpdateRequestedFor.Add(arrow.Uid, false);
     }
 }

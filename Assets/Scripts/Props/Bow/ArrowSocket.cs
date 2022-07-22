@@ -27,7 +27,7 @@ public class ArrowSocket : XRSocketInteractor
         Arrow arrow = args.interactableObject.transform.GetComponent<Arrow>();
         DebugUI.Show($"Selected {arrow}");
         if (ReferenceEquals(null, arrow)) { return; }
-        DebugUI.Show($"Selected arrow wasn't null : {arrow.UID}");
+        DebugUI.Show($"Selected arrow wasn't null : {arrow.Uid}");
         
         Rigidbody arrowBody = arrow.GetComponent<Rigidbody>();
         arrowBody.useGravity = false;
@@ -54,7 +54,7 @@ public class ArrowSocket : XRSocketInteractor
         Arrow arrow = interactable.transform.GetComponent<Arrow>();
         return base.CanHover(interactable)
                && bowBehavior.isHeld
-               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.UID)
+               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.Uid)
                && (!ReferenceEquals(null, arrow) && !arrow.Launched);
     }
 
@@ -64,7 +64,7 @@ public class ArrowSocket : XRSocketInteractor
         return base.CanSelect(interactable)
                && bowBehavior.isHeld
                && !ReferenceEquals(null, arrow) && !arrow.Launched
-               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.UID);
+               && (!bowBehavior.IsArrowLoaded || bowBehavior.LoadedArrowId() == arrow.Uid);
     }
 
 

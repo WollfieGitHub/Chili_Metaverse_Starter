@@ -22,6 +22,9 @@ public class ShootingDistanceSetting : MonoBehaviour
 
     private void DistanceChanged(float distance)
     {
+        // Wow I discovered "merge into pattern" here :o
+        if (distance is < 10 or > 90) { return; }
+        
         ConfigManager.Instance.SetShootingDistance((int)distance);
         // 5 : Correction because of the terrain configuration and correcting the terrain
         // isn't a priority

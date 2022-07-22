@@ -28,11 +28,12 @@ public class ConfigManager : MonoBehaviour
         ShootingDistanceManager.Instance.UpdateDistance();
     }
 
-    public void SetBowType(BowType bowType)
+    public void SetBowType(BowType newBowType)
     {
-        switch (bowType)
+        bowType = newBowType;
+        switch (newBowType)
         {
-            case BowType.Compound: arrowSpeed = 83.8f; break;
+            case BowType.Compound: arrowSpeed = 97.5f; break;
             case BowType.Recurve: arrowSpeed = 69.3f; break;
         }
     }

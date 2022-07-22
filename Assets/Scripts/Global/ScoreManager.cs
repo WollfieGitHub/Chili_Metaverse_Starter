@@ -28,7 +28,6 @@ public class ScoreManager : MonoBehaviour
         volleyId++;
         volleyScore = 0;
         lastHitScore = 0;
-        score = 0;
         nbArrowsInVolley = 0;
     }
 

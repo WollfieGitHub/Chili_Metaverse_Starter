@@ -24,7 +24,7 @@ public class ArrowFetching : MonoBehaviour
         }
         else
         {
-            FindObjectOfType<XROrigin>().transform.position = shootingAnchorTransform.position;
+            FindObjectOfType<XROrigin>().transform.position = GameObject.FindWithTag("ShootingAnchor").transform.position;
         }
     }
 }

@@ -106,7 +106,7 @@ public class BowBehavior : XRGrabInteractable
         arrow.Launch(bowSpreading / DrawLength );
     }
 
-    public string LoadedArrowId() => ReferenceEquals(_arrowLoaded, null) ? null : _arrowLoaded.UID;
+    public string LoadedArrowId() => ReferenceEquals(_arrowLoaded, null) ? null : _arrowLoaded.Uid;
 
     public override bool IsSelectableBy(IXRSelectInteractor interactor) => 
         (!isHeld || interactorsSelecting.Contains(interactor)) && base.IsSelectableBy(interactor);

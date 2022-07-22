@@ -11,11 +11,13 @@ public class DrawWeightSetting : MonoBehaviour
     private void Start()
     {
         _dropdown = GetComponentInChildren<Dropdown>();
-        _dropdown.onValueChanged.AddListener(HandleDrawWeightChoice);
+        _dropdown.onValueChanged.AddListener(delegate {
+            HandleDrawWeightChoice(_dropdown);
+        });
     }
 
-    private void HandleDrawWeightChoice(int index)
+    private void HandleDrawWeightChoice(Dropdown dropdown)
     {
-        ConfigManager.Instance.SetBowType((BowType)index);
+        ConfigManager.Instance.SetBowType((BowType)dropdown.value);
     }
 }
