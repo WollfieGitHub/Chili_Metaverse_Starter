@@ -67,6 +67,7 @@ public class BowBehavior : XRGrabInteractable
             middleStringAttachPoint.position, 
             topStringAttachPoint.position
         });
+        // DebugUI.Show($"Tension = {bowSpreading}");
     }
 
     public void Release()

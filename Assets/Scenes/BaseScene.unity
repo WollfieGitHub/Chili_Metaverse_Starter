@@ -3774,7 +3774,7 @@ MonoBehaviour:
   m_OriginBaseGameObject: {fileID: 466356492}
   m_CameraFloorOffsetObject: {fileID: 948912755}
   m_RequestedTrackingOriginMode: 0
-  m_CameraYOffset: 1.1176
+  m_CameraYOffset: 1.116
 --- !u!4 &466356494
 Transform:
   m_ObjectHideFlags: 0
@@ -12173,10 +12173,10 @@ MonoBehaviour:
   m_PositionAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Position
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 31832a2c-55bb-46f5-9057-e1e8a2a00c2d
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12185,10 +12185,10 @@ MonoBehaviour:
   m_RotationAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Rotation
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: bfa1daf3-e785-4384-8b0e-7eeca63cb6fe
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12197,10 +12197,10 @@ MonoBehaviour:
   m_TrackingStateAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Tracking State
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: e8d6bd5b-a9d6-4b21-8db0-c8f0c3bb9a2f
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12209,10 +12209,10 @@ MonoBehaviour:
   m_SelectAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Select
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 4cb23a8d-66f8-43ae-a277-ae65e24cb1a7
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12221,10 +12221,10 @@ MonoBehaviour:
   m_SelectActionValue:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Select Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 942aaf22-bea4-4c0e-a03d-d5e6454aa498
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12233,10 +12233,10 @@ MonoBehaviour:
   m_ActivateAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Activate
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 91f8ba55-1b60-4fc6-bf1a-7b296970e469
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12245,10 +12245,10 @@ MonoBehaviour:
   m_ActivateActionValue:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Activate Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 6291f6c1-04fd-4668-96aa-c11ac09bbc9c
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12257,10 +12257,10 @@ MonoBehaviour:
   m_UIPressAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: UI Press
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 5247b6e6-46b3-4a8d-b9e4-8ee06848f848
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12269,10 +12269,10 @@ MonoBehaviour:
   m_UIPressActionValue:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: UI Press Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 8a549b4a-cd0d-4cda-b906-c8ce79d53ee6
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12281,10 +12281,10 @@ MonoBehaviour:
   m_HapticDeviceAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Haptic Device
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 0a98ee94-ab32-41fa-a6c5-1878388cee9e
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12293,10 +12293,10 @@ MonoBehaviour:
   m_RotateAnchorAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Rotate Anchor
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 8abc983a-b939-4a6d-9951-f8ecfbfb7acf
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12305,10 +12305,10 @@ MonoBehaviour:
   m_TranslateAnchorAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Translate Anchor
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 153cab8c-8bf1-466a-9bdb-22967a34c4da
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -12812,7 +12812,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1718017194}
   - component: {fileID: 1718017193}
-  - component: {fileID: 1718017195}
   m_Layer: 0
   m_Name: ArcheryShootingAnchor
   m_TagString: ShootingAnchor
@@ -12834,13 +12833,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 132326034}
   m_Colliders:
-  - {fileID: 1718017195}
+  - {fileID: 0}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
-  m_SelectMode: 1
+  m_SelectMode: 0
   m_CustomReticle: {fileID: 195790, guid: ded1d2e0d283d62428212702b4ed5f3f, type: 3}
   m_FirstHoverEntered:
     m_PersistentCalls:
@@ -12900,8 +12899,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_TeleportationProvider: {fileID: 466356498}
-  m_MatchOrientation: 2
-  m_TeleportTrigger: 1
+  m_MatchOrientation: 0
+  m_TeleportTrigger: 0
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
@@ -12913,27 +12912,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718017192}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.000000104308114}
+  m_LocalRotation: {x: -0, y: -0.00000043213367, z: -0, w: 1}
   m_LocalPosition: {x: 0.002, y: 0, z: 8.868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!135 &1718017195
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718017192}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.48
-  m_Center: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1743304631
 PrefabInstance:
   m_ObjectHideFlags: 0

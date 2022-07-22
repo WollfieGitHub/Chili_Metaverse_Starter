@@ -13,7 +13,7 @@ public class ConfigManager : MonoBehaviour
     public static ConfigManager Instance;
 
     public BowType bowType;
-    public float arrowSpeed;
+    public float arrowSpeed = 69f;
     public int shootingDistance;
 
     private void Awake()
@@ -26,6 +26,7 @@ public class ConfigManager : MonoBehaviour
     private void Start()
     {
         ShootingDistanceManager.Instance.UpdateDistance();
+        SetBowType(bowType);
     }
 
     public void SetBowType(BowType newBowType)
